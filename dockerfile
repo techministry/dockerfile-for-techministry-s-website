@@ -14,12 +14,14 @@ MAINTAINER aldor
 RUN apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
 RUN echo "deb http://nginx.org/packages/mainline/debian/ jessie nginx" >> /etc/apt/sources.list
 
-ENV NGINX_VERSION 1.9.5-1~jessie
+ENV NGINX_VERSION 1.9.6-1~jessie
 
 RUN apt-get update && \
     apt-get dist-upgrade -y && \
-    apt-get install -y ca-certificates nginx=${NGINX_VERSION} git
+    apt-get install -y ca-certificates nginx=${NGINX_VERSION} git cron wget vim
 
+RUN echo "*/5 * * * * wget http://techministry.ddns.net/hackers.txt\
+ -O /usr/share/nginx/html/hackers.txt" >> /var/spool/cron/crontabs/root
 
 # Forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
@@ -38,4 +40,4 @@ RUN git clone https://github.com/techministry/website /usr/share/nginx/html/
 ################## INSTALLATION END ######################
 
 EXPOSE 80 443
-CMD service nginx stop && git pull origin master && service nginx start && /bin/bash
+CMD service cron start && service nginx stop && git pull origin master && service nginx start && /bin/bash
