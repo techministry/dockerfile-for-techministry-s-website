@@ -20,8 +20,9 @@ RUN apt-get update && \
     apt-get dist-upgrade -y && \
     apt-get install -y ca-certificates nginx=${NGINX_VERSION} git cron wget vim
 
-RUN echo "*/5 * * * * wget http://techministry.ddns.net/hackers.txt\
- -O /usr/share/nginx/html/hackers.txt" >> /var/spool/cron/crontabs/root
+RUN echo "*/5 * * * * wget http://techministry.ddns.net/hackers.txt -O /usr/share/nginx/html/hackers.txt" >> mycron
+RUN crontab mycron
+RUN rm mycron
 
 # Forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
@@ -40,4 +41,6 @@ RUN git clone https://github.com/techministry/website /usr/share/nginx/html/
 ################## INSTALLATION END ######################
 
 EXPOSE 80 443
-CMD service cron start && service nginx stop && git pull origin master && service nginx start && /bin/bash
+CMD service cron start && service nginx stop && git pull origin master && \
+    wget http://techministry.ddns.net/hackers.txt -O /usr/share/nginx/html/hackers.txt && \
+    service nginx start && /bin/bash
