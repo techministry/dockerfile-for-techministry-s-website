@@ -28,6 +28,8 @@ RUN rm mycron
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
 RUN ln -sf /dev/stderr /var/log/nginx/error.log
 
+RUN rm /etc/nginx/nginx.conf
+RUN wget -O /etc/nginx/nginx.conf https://raw.githubusercontent.com/techministry/website-dockerfile/master/website-nginx.conf
 RUN mkdir /etc/nginx/sites-available/
 RUN echo "server { \n        listen   80;\n\n        root usr/share/nginx/html/; \n\
         index index.php index.html index.htm;\n\n        server_name techministry.gr;\n\n\
