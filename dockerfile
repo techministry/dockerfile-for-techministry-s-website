@@ -14,7 +14,7 @@ MAINTAINER aldor
 RUN apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
 RUN echo "deb http://nginx.org/packages/mainline/debian/ jessie nginx" >> /etc/apt/sources.list
 
-ENV NGINX_VERSION 1.9.6-1~jessie
+ENV NGINX_VERSION 1.9.7-1~jessie
 
 RUN apt-get update && \
     apt-get dist-upgrade -y && \
@@ -34,13 +34,13 @@ RUN echo "server { \n        listen   80;\n\n        root usr/share/nginx/html/;
         error_page 404 /404.html;\n\n        error_page 500 502 503 504 /50x.html; \n\n\
        location = /50x.html {\n              root /usr/share/nginx/html/;\n        }\n}" \
         >/etc/nginx/sites-available/default
-WORKDIR usr/share/nginx/html/
+WORKDIR /usr/share/nginx/html
 RUN rm *
-RUN git clone https://github.com/techministry/website /usr/share/nginx/html/
+RUN git clone https://github.com/techministry/new_website.git /usr/share/nginx/html/
 
 ################## INSTALLATION END ######################
 
 EXPOSE 80 443
 CMD service cron start && service nginx stop && git pull origin master && \
     wget http://techministry.ddns.net/hackers.txt -O /usr/share/nginx/html/hackers.txt && \
-    service nginx start && /bin/bash
+    service nginx start &&  /bin/bash
