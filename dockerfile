@@ -21,6 +21,7 @@ RUN apt-get update && \
     apt-get install -y ca-certificates nginx=${NGINX_VERSION} git cron wget vim
 
 RUN echo "*/5 * * * * wget http://techministry.ddns.net/hackers.txt -O /usr/share/nginx/html/hackers.txt" >> mycron
+RUN echo "*/5 * * * * wget http://discourse.techministry.gr/c/5/l/latest.json -O /usr/share/nginx/html/latest.json" >> mycron
 RUN crontab mycron
 RUN rm mycron
 
