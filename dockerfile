@@ -18,12 +18,16 @@ ENV NGINX_VERSION 1.9.7-1~jessie
 
 RUN apt-get update && \
     apt-get dist-upgrade -y && \
-    apt-get install -y ca-certificates nginx=${NGINX_VERSION} git cron wget vim
+    apt-get install -y ca-certificates nginx=${NGINX_VERSION} git cron wget vim mosquitto ruby
 
-RUN echo "*/5 * * * * wget http://techministry.ddns.net/hackers.txt -O /usr/share/nginx/html/hackers.txt" >> mycron
 RUN echo "*/5 * * * * wget http://discourse.techministry.gr/c/5/l/latest.json -O /usr/share/nginx/html/latest.json" >> mycron
+RUN echo "@reboot  mosquitto -c /var/local/mosquitto/mosquitto.conf" >> mycron
 RUN crontab mycron
 RUN rm mycron
+
+# Mosquitto configuration
+COPY mqtt/ /var/local/mosquitto/
+COPY mqtt.rb /var/local/
 
 # Forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
@@ -43,7 +47,7 @@ RUN git clone https://github.com/techministry/new_website.git /usr/share/nginx/h
 
 ################## INSTALLATION END ######################
 
-EXPOSE 80 443
+EXPOSE 80 443 1883
 CMD service cron start && service nginx stop && git pull origin master && \
-    wget http://techministry.ddns.net/hackers.txt -O /usr/share/nginx/html/hackers.txt && \
-    service nginx start &&  /bin/bash
+    service nginx start && mosquitto -d -c /var/local/mosquitto/mosquitto.conf && \
+    gem install mqtt && ruby /var/local/mqtt.rb && /bin/bash
