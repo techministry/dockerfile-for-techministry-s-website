@@ -16,9 +16,15 @@ RUN echo "deb http://nginx.org/packages/mainline/debian/ jessie nginx" >> /etc/a
 
 ENV NGINX_VERSION 1.9.7-1~jessie
 
+RUN apt-get update
+RUN apt-get install -y wget
+RUN wget http://repo.mosquitto.org/debian/mosquitto-repo.gpg.key
+RUN apt-key add mosquitto-repo.gpg.key
+RUN wget -O /etc/apt/sources.list.d/mosquitto-jessie.list http://repo.mosquitto.org/debian/mosquitto-jessie.list
+
 RUN apt-get update && \
     apt-get dist-upgrade -y && \
-    apt-get install -y ca-certificates nginx=${NGINX_VERSION} git cron wget vim mosquitto ruby
+    apt-get install -y ca-certificates nginx=${NGINX_VERSION} git cron vim mosquitto ruby
 
 RUN echo "*/5 * * * * wget http://discourse.techministry.gr/c/5/l/latest.json -O /usr/share/nginx/html/latest.json" >> mycron
 RUN echo "@reboot  mosquitto -c /var/local/mosquitto/mosquitto.conf" >> mycron
