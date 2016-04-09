@@ -1,8 +1,14 @@
 require 'rubygems'
 require 'mqtt'
+require 'openssl'
 
 # Subscribe example
-client = MQTT::Client.connect('www.techministry.gr')
+ client = MQTT::Client.connect(
+  :host => 'www.techministry.gr',
+  :port => 1883,
+  :ssl => true,
+  :ca_file => 'path_to_your_ca'
+ )
 client.subscribe('techministry/spacestatus/hackers')
 client.get do |topic,message|
   # If you pass a block to the get method, then it will loop
