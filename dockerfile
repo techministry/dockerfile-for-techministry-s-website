@@ -26,7 +26,7 @@ RUN apt-get update && \
     apt-get dist-upgrade -y && \
     apt-get install -y ca-certificates nginx=${NGINX_VERSION} git cron vim mosquitto ruby
 
-RUN echo "*/5 * * * * wget http://discourse.techministry.gr/c/5/l/latest.json -O /usr/share/nginx/html/latest.json" >> mycron
+RUN echo "*/5 * * * * wget https://discourse.techministry.gr/c/5/l/latest.json -O /usr/share/nginx/html/latest.json" >> mycron
 RUN echo "@reboot  mosquitto -c /var/local/mosquitto/mosquitto.conf" >> mycron
 RUN crontab mycron
 RUN rm mycron
