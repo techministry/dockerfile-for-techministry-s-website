@@ -4,7 +4,7 @@ require 'openssl'
 
 # Subscribe example
  client = MQTT::Client.connect(
-  :host => 'www.techministry.gr',
+  :host => 'www.techministry.rocks',
   :port => 1883,
   :ssl => true,
   :ca_file => '/var/local/mosquitto/MQTT-CA-TM.crt'
