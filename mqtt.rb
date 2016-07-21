@@ -7,7 +7,7 @@ require 'openssl'
   :host => 'www.techministry.rocks',
   :port => 1883,
   :ssl => true,
-  :ca_file => '/var/local/mosquitto/MQTT-CA-TM.crt'
+  :ca_file => '/var/local/mosquitto/CA.crt'
  )
 client.subscribe('techministry/spacestatus/hackers')
 client.get do |topic,message|
