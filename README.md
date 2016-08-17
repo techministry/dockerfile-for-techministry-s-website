@@ -12,4 +12,4 @@
 
 ### MinisterIN
 * Build the image `docker build -f MinisterIN-Dockerfile -t ministerin .` (you may have to add `sudo` in front of the command)
-* Run the container `docker run --name ministerin --restart=always -t -i -d ministerin` (remove -d if you don't want to run the container at the background)
+* Run the container `docker run --name ministerin --restart=always -P -t -i -d ministerin` (remove -d if you don't want to run the container at the background)
