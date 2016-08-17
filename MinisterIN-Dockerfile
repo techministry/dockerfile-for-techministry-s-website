@@ -16,6 +16,7 @@ RUN apt-get install -y git
 
 # Clone repo
 RUN git clone https://github.com/techministry/MinisterIN.git
+COPY credentials/MinisterIn/ MinisterIN/
 
 # Install dependencies
 WORKDIR MinisterIN
