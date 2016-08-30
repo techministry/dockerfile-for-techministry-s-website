@@ -1,0 +1,30 @@
+version: '2'
+
+services:
+
+  website:
+    build:
+      context: .
+      dockerfile: Website-Dockerfile
+    expose:
+      - "80"
+      - "443"
+    ports:
+      - "1883:1883"
+
+  proxy:
+    build:
+      context: .
+      dockerfile: HAProxy-Dockerfile
+    links:
+      - website
+    ports:
+      - "80:80"
+      - "443:443"
+
+  ministerin:
+    build:
+      context: .
+      dockerfile: MinisterIN-Dockerfile
+    ports:
+      - "7777:7777"
