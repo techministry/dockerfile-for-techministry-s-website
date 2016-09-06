@@ -21,6 +21,8 @@ services:
       dockerfile: HAProxy-Dockerfile
     links:
       - website
+    external_links:
+      - app:discourse
     ports:
       - "80:80"
       - "443:443"
