@@ -11,6 +11,9 @@ services:
       - "443"
     ports:
       - "1883:1883"
+    volumes:
+      - /etc/letsencrypt/live/www.techministry.rocks:/etc/letsencrypt/live/www.techministry.rocks:ro
+      - /etc/letsencrypt/archive/www.techministry.rocks:/etc/letsencrypt/archive/www.techministry.rocks:ro
 
   proxy:
     build:
