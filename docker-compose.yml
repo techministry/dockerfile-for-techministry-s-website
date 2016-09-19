@@ -12,8 +12,8 @@ services:
     ports:
       - "1883:1883"
     volumes:
-      - /etc/letsencrypt/live/www.techministry.rocks:/etc/letsencrypt/live/www.techministry.rocks:ro
-      - /etc/letsencrypt/archive/www.techministry.rocks:/etc/letsencrypt/archive/www.techministry.rocks:ro
+      - /etc/letsencrypt/live/www.lambdaspace.gr:/etc/letsencrypt/live/www.lambdaspace.gr:ro
+      - /etc/letsencrypt/archive/www.lambdaspace.gr:/etc/letsencrypt/archive/www.lambdaspace.gr:ro
 
   proxy:
     build:
