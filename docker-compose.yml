@@ -15,12 +15,23 @@ services:
       - /etc/letsencrypt/live/www.lambdaspace.gr:/etc/letsencrypt/live/www.lambdaspace.gr:ro
       - /etc/letsencrypt/archive/www.lambdaspace.gr:/etc/letsencrypt/archive/www.lambdaspace.gr:ro
 
+  redirector:
+    image: nginx:stable-alpine
+    volumes:
+      - ./redirector-nginx.conf:/etc/nginx/nginx.conf:ro
+      - /etc/letsencrypt/live/www.techministry.rocks:/etc/letsencrypt/live/techministry.rocks:ro
+      - /etc/letsencrypt/archive/www.techministry.rocks:/etc/letsencrypt/archive/techministry.rocks:ro
+    expose:
+      - "80"
+      - "443"
+
   proxy:
     build:
       context: .
       dockerfile: HAProxy-Dockerfile
     links:
       - website
+      - redirector
     external_links:
       - app:discourse
     ports:
