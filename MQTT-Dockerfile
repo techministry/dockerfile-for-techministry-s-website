@@ -1,0 +1,28 @@
+############################################################
+# Dockerfile to build Lambda Space MQTT broker
+# Based on Debian
+############################################################
+
+# Set the base image to Debian
+FROM debian:jessie
+
+# File Author / Maintainer
+MAINTAINER aldor
+
+################## BEGIN INSTALLATION ######################
+RUN apt-get update && apt-get install -y wget
+RUN wget http://repo.mosquitto.org/debian/mosquitto-repo.gpg.key
+RUN apt-key add mosquitto-repo.gpg.key
+RUN wget -O /etc/apt/sources.list.d/mosquitto-jessie.list http://repo.mosquitto.org/debian/mosquitto-jessie.list
+
+RUN apt-get update && \
+    apt-get dist-upgrade -y && \
+    apt-get install -y ca-certificates mosquitto
+
+# Mosquito configuration
+COPY credentials/mqtt /var/local/mosquitto
+
+################## INSTALLATION END ######################
+
+EXPOSE 8883
+CMD mosquitto -d -c /var/local/mosquitto/mosquitto.conf && /bin/bash

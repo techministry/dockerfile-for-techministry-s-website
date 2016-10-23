@@ -1,5 +1,5 @@
 ############################################################
-# Dockerfile to build Tech Ministry's website
+# Dockerfile to build Lambda Space website
 # Based on Debian
 ############################################################
 
@@ -16,23 +16,15 @@ RUN echo "deb http://nginx.org/packages/mainline/debian/ jessie nginx" >> /etc/a
 
 ENV NGINX_VERSION 1.9.7-1~jessie
 
-RUN apt-get update
-RUN apt-get install -y wget
-RUN wget http://repo.mosquitto.org/debian/mosquitto-repo.gpg.key
-RUN apt-key add mosquitto-repo.gpg.key
-RUN wget -O /etc/apt/sources.list.d/mosquitto-jessie.list http://repo.mosquitto.org/debian/mosquitto-jessie.list
-
 RUN apt-get update && \
     apt-get dist-upgrade -y && \
-    apt-get install -y ca-certificates nginx=${NGINX_VERSION} git cron vim mosquitto ruby
+    apt-get install -y ca-certificates nginx=${NGINX_VERSION} git cron ruby
 
 RUN echo "*/5 * * * * wget https://community.lambdaspace.gr/c/5/l/latest.json -O /usr/share/nginx/html/latest.json" >> mycron
-RUN echo "@reboot  mosquitto -c /var/local/mosquitto/mosquitto.conf" >> mycron
 RUN crontab mycron
 RUN rm mycron
 
-# Mosquitto configuration
-COPY credentials/mqtt/ /var/local/mosquitto/
+# Mqtt script
 COPY mqtt.rb /var/local/
 
 # Forward request and error logs to docker log collector
@@ -43,11 +35,10 @@ COPY website-nginx.conf /etc/nginx/nginx.conf
 
 WORKDIR /usr/share/nginx/html
 RUN rm *
-RUN git clone https://github.com/techministry/new_website.git /usr/share/nginx/html/
+RUN git clone https://github.com/lambdaspace/new_website.git /usr/share/nginx/html/
 
 ################## INSTALLATION END ######################
 
-EXPOSE 80 443 1883
+EXPOSE 80 443
 CMD service cron start && service nginx stop && git pull origin master && \
-    service nginx start && mosquitto -d -c /var/local/mosquitto/mosquitto.conf && \
-    gem install mqtt && ruby /var/local/mqtt.rb && /bin/bash
+    service nginx start && gem install mqtt && ruby /var/local/mqtt.rb && /bin/bash
