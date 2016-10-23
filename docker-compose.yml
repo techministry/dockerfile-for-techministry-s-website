@@ -9,11 +9,11 @@ services:
     expose:
       - "80"
       - "443"
-    ports:
-      - "1883:1883"
     volumes:
       - /etc/letsencrypt/live/www.lambdaspace.gr:/etc/letsencrypt/live/www.lambdaspace.gr:ro
       - /etc/letsencrypt/archive/www.lambdaspace.gr:/etc/letsencrypt/archive/www.lambdaspace.gr:ro
+    depends_on: mqtt
+    restart: always
 
   redirector:
     image: nginx:stable-alpine
@@ -24,6 +24,7 @@ services:
     expose:
       - "80"
       - "443"
+    restart: always
 
   proxy:
     build:
@@ -37,6 +38,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    restart: always
 
   ministerin:
     build:
@@ -44,3 +46,15 @@ services:
       dockerfile: MinisterIN-Dockerfile
     ports:
       - "7777:7777"
+    depends_on: mqtt
+    restart: always
+
+  mqtt:
+    build:
+      context: .
+      dockerfile: MQTT-Dockerfile
+    volumes:
+      - "credentials/mqtt:/var/local/mosquitto"
+    ports:
+      - "8883:8883"
+    restart: always
