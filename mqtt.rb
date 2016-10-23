@@ -7,7 +7,6 @@ require 'openssl'
   :host => 'mqtt.lambdaspace.gr',
   :port => 8883,
   :ssl => true,
-  :ca_file => '/var/local/mosquitro/cert/MQTT-LSPACE-CA.crt'
  )
 client.subscribe('lambdaspace/spacestatus/hackers')
 client.get do |topic,message|
