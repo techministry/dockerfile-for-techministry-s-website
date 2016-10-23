@@ -25,4 +25,4 @@ COPY credentials/mqtt /var/local/mosquitto
 ################## INSTALLATION END ######################
 
 EXPOSE 8883
-CMD mosquitto -d -c /var/local/mosquitto/mosquitto.conf && /bin/bash
+CMD mosquitto -c /var/local/mosquitto/mosquitto.conf
