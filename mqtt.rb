@@ -4,7 +4,7 @@ require 'openssl'
 
 # Subscribe example
  client = MQTT::Client.connect(
-  :host => 'mqtt.lambdaspace.gr',
+  :host => 'mqtt',
   :port => 8883,
   :ssl => true,
  )

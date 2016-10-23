@@ -6,14 +6,14 @@ services:
     build:
       context: .
       dockerfile: Website-Dockerfile
+    links:
+      - mqtt
     expose:
       - "80"
       - "443"
     volumes:
       - /etc/letsencrypt/live/www.lambdaspace.gr:/etc/letsencrypt/live/www.lambdaspace.gr:ro
       - /etc/letsencrypt/archive/www.lambdaspace.gr:/etc/letsencrypt/archive/www.lambdaspace.gr:ro
-    depends_on:
-      - mqtt
     restart: always
 
   redirector:
