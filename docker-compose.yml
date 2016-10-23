@@ -54,7 +54,7 @@ services:
       context: .
       dockerfile: MQTT-Dockerfile
     volumes:
-      - "credentials/mqtt:/var/local/mosquitto"
+      - credentials/mqtt:/var/local/mosquitto:ro
     ports:
       - "8883:8883"
     restart: always
