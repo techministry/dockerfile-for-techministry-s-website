@@ -3,7 +3,7 @@
 ############################################################
 
 # Use the slim Node.js base image
-FROM node:0.12-slim
+FROM node:7.7-slim
 
 # File Author / Maintainer
 MAINTAINER AEtherC0r3
@@ -15,12 +15,12 @@ RUN apt-get update
 RUN apt-get install -y git
 
 # Clone repo
-RUN git clone https://github.com/techministry/MinisterIN.git
+RUN git clone https://github.com/lambdaspace/MinisterIN.git
 COPY credentials/MinisterIn/ MinisterIN/
 
 # Install dependencies
 WORKDIR MinisterIN
-RUN npm install
+RUN yarn install
 
 # Open port 7777
 EXPOSE 7777
