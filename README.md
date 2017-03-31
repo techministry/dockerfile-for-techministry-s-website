@@ -1,4 +1,4 @@
-# Compose for deploying techministry's website, discourse and MinisterIN service
+# Compose for deploying LambdaSpace's website, discourse and MinisterIN service
 
 ## Requirements
 * Docker: https://docs.docker.com/installation/
