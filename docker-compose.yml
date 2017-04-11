@@ -28,9 +28,7 @@ services:
     restart: always
 
   proxy:
-    build:
-      context: .
-      dockerfile: HAProxy-Dockerfile
+    image: haproxy:1.6-alpine
     links:
       - website
       - redirector
@@ -39,6 +37,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     restart: always
 
   ministerin:
@@ -47,7 +47,7 @@ services:
       dockerfile: MinisterIN-Dockerfile
     ports:
       - "7777:7777"
-    depends_on: 
+    depends_on:
       - mqtt
     restart: always
 
