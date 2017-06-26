@@ -14,7 +14,10 @@ services:
     volumes:
       - /etc/letsencrypt/live/www.lambdaspace.gr:/etc/letsencrypt/live/www.lambdaspace.gr:ro
       - /etc/letsencrypt/archive/www.lambdaspace.gr:/etc/letsencrypt/archive/www.lambdaspace.gr:ro
+      - /tmp/dist:/usr/share/nginx/html/dist:ro
     restart: always
+    depends_on:
+      - gulp
 
   redirector:
     image: nginx:stable-alpine
@@ -28,7 +31,7 @@ services:
     restart: always
 
   proxy:
-    image: haproxy:1.6-alpine
+    image: haproxy:1.7-alpine
     links:
       - website
       - redirector
@@ -60,3 +63,11 @@ services:
     ports:
       - "8883:8883"
     restart: always
+
+  gulp:
+    build:
+      context: .
+      dockerfile: Gulp-Dockerfile
+    volumes:
+      - /etc/hosts:/etc/hosts:ro
+      - /tmp/dist:/new_website/dist

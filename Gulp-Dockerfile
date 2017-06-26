@@ -1,29 +1,30 @@
 ############################################################
-# Dockerfile to build the MinisterIN service
+# Dockerfile for gulp and bower
 ############################################################
 
 # Use the slim Node.js base image
 FROM node:8-alpine
 
 # File Author / Maintainer
-MAINTAINER AEtherC0r3
+MAINTAINER alexdor
 
 ################## BEGIN INSTALLATION ######################
 
 # Update repositories and install git
-RUN apk update && apk add git
+RUN apk update &&N apk add git
 
 # Clone repo
-RUN git clone https://github.com/lambdaspace/MinisterIN.git
-COPY credentials/MinisterIn/ MinisterIN/
+RUN git clone https://github.com/lambdaspace/new_website.git
+
+RUN yarn global add bower gulp
 
 # Install dependencies
-WORKDIR MinisterIN
+WORKDIR new_website
+# ADD ./node_modules node_modules/
+# ADD ./src/components src/components/
 RUN yarn install
-
-# Open port 7777
-EXPOSE 7777
+RUN bower install --allow-root
 
 ################## INSTALLATION END ######################
 
-CMD node MinisterIN.js
+CMD /usr/local/bin/gulp --production /new_website/
