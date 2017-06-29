@@ -2,7 +2,7 @@
 # Dockerfile for gulp and bower
 ############################################################
 
-# Use the slim Node.js base image
+# Use the alpine Node.js base image
 FROM node:8-alpine
 
 # File Author / Maintainer
@@ -11,7 +11,7 @@ MAINTAINER alexdor
 ################## BEGIN INSTALLATION ######################
 
 # Update repositories and install git
-RUN apk update &&N apk add git
+RUN apk update && apk add git
 
 # Clone repo
 RUN git clone https://github.com/lambdaspace/new_website.git

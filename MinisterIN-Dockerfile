@@ -2,7 +2,7 @@
 # Dockerfile to build the MinisterIN service
 ############################################################
 
-# Use the slim Node.js base image
+# Use the alpine Node.js base image
 FROM node:8-alpine
 
 # File Author / Maintainer
