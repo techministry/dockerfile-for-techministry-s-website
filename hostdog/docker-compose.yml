@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  proxy:
+    image: haproxy:alpine
+    networks:
+      - chat_network
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    restart: always
+
+networks:
+  chat_network:
+    external:
+      name: mattermostdocker_default
