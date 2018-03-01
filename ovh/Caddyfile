@@ -1,2 +1,2 @@
-localhost:80
+api.lambdaspace.gr
 proxy / http://lapi:1323
