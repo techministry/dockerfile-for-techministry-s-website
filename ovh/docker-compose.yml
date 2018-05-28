@@ -2,10 +2,11 @@ version: '3.2'
 
 services:
   rancher:
-    image: rancher/server:preview
+    image: rancher/rancher
     restart: unless-stopped
-    ports:
-      - "8080:8080"
+#    ports:
+#      - "8080:80"
+#      - "8443:443"
   lapi:
     build:
       context: .
@@ -21,3 +22,4 @@ services:
       - 443:443
     links:
       - lapi
+      - rancher

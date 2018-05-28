@@ -1,2 +1,12 @@
-api.lambdaspace.gr
-proxy / http://lapi:1323
+api.lambdaspace.gr {
+  proxy / http://lapi:1323
+}
+
+rancher.lambdaspace.gr {
+  proxy / rancher {
+    transparent
+    insecure_skip_verify
+    websocket
+  }
+  log stdout
+}
