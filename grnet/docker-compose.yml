@@ -1,11 +1,10 @@
-version: '2'
+version: "3.2"
 
 services:
-
   website:
     build:
       context: .
-      dockerfile: Website-Dockerfile
+      dockerfile: website.dockerfile
     links:
       - mqtt
     expose:
@@ -44,7 +43,7 @@ services:
   ministerin:
     build:
       context: .
-      dockerfile: MinisterIN-Dockerfile
+      dockerfile: ministerIN.dockerfile
     ports:
       - "7777:7777"
     depends_on:
@@ -54,7 +53,7 @@ services:
   mqtt:
     build:
       context: .
-      dockerfile: MQTT-Dockerfile
+      dockerfile: mqtt.dockerfile
     volumes:
       - ./credentials/mqtt:/var/local/mosquitto:ro
     ports:

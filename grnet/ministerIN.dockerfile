@@ -5,13 +5,10 @@
 # Use the alpine Node.js base image
 FROM node:8-alpine
 
-# File Author / Maintainer
-MAINTAINER AEtherC0r3
-
 ################## BEGIN INSTALLATION ######################
 
 # Update repositories and install git
-RUN apk update && apk add git
+RUN apk add --update --no-cache git
 
 # Clone repo
 RUN git clone https://github.com/lambdaspace/MinisterIN.git
@@ -25,5 +22,5 @@ RUN yarn install
 EXPOSE 7777
 
 ################## INSTALLATION END ######################
-
+USER 1000
 CMD node MinisterIN.js
