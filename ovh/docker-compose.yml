@@ -1,17 +1,16 @@
-version: '3.2'
+version: "3.2"
 
 services:
-  rancher:
-    image: rancher/rancher
-    restart: unless-stopped
-#    ports:
-#      - "8080:80"
-#      - "8443:443"
   lapi:
     build:
       context: .
       dockerfile: lapi.dockerfile
     restart: unless-stopped
+    enviroment:
+      - BROKER_HOST: mqtt.lambdaspace.gr
+      - BROKER_PORT: 1883
+      - MQTT_TOPIC_HACKERS: "lambdaspace/spacestatus/hackers"
+      - MQTT_TOPIC_STATS: "lambdaspace/spacestatus/stats"
   caddy:
     image: abiosoft/caddy
     restart: unless-stopped
