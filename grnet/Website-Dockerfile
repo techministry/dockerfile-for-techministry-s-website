@@ -1,7 +1,18 @@
 ############################################################
-# Dockerfile to build Lambda Space website
-# Based on Debian
+# Dockerfile to build and server LambdaSpace's website
 ############################################################
+
+# Use the Node image to build the website's assets
+FROM node:8.11.3-stretch as asset_builder
+
+RUN git clone https://github.com/lambdaspace/new_website.git
+
+# Install packages and build assets
+WORKDIR /new_website
+RUN yarn install
+RUN node_modules/.bin/gulp --production
+
+RUN rm -r node_modules
 
 # Set the base image to Debian
 FROM debian:jessie
@@ -18,7 +29,7 @@ ENV NGINX_VERSION 1.9.7-1~jessie
 
 RUN apt-get update && \
     apt-get dist-upgrade -y && \
-    apt-get install -y ca-certificates nginx=${NGINX_VERSION} git cron ruby
+    apt-get install -y ca-certificates nginx=${NGINX_VERSION} cron ruby
 
 RUN echo "*/5 * * * * wget https://community.lambdaspace.gr/c/5/l/latest.json -O /usr/share/nginx/html/latest.json" >> mycron
 RUN crontab mycron
@@ -35,7 +46,7 @@ COPY website-nginx.conf /etc/nginx/nginx.conf
 
 WORKDIR /usr/share/nginx/html
 RUN rm *
-RUN git clone https://github.com/lambdaspace/new_website.git /usr/share/nginx/html/
+COPY --from=asset_builder /new_website/* ./
 
 ################## INSTALLATION END ######################
 
