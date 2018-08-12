@@ -7,10 +7,10 @@ services:
       dockerfile: lapi.dockerfile
     restart: unless-stopped
     environment:
-      - BROKER_HOST: mqtt.lambdaspace.gr
-      - BROKER_PORT: 8883
-      - MQTT_TOPIC_HACKERS: "lambdaspace/spacestatus/hackers"
-      - MQTT_TOPIC_STATS: "lambdaspace/spacestatus/stats"
+      BROKER_HOST: "mqtt.lambdaspace.gr"
+      BROKER_PORT: 8883
+      MQTT_TOPIC_HACKERS: "lambdaspace/spacestatus/hackers"
+      MQTT_TOPIC_STATS: "lambdaspace/spacestatus/stats"
   caddy:
     image: abiosoft/caddy
     restart: unless-stopped
