@@ -3,7 +3,7 @@
 ############################################################
 
 # Use the Node image to build the website's assets
-FROM node:8.11.3-stretch as asset_builder
+FROM node:10-stretch as asset_builder
 
 RUN git clone https://github.com/lambdaspace/new_website.git
 
@@ -15,25 +15,13 @@ RUN node_modules/.bin/gulp --production
 RUN rm -r node_modules
 
 # Set the base image to Debian
-FROM debian:jessie
-
-# File Author / Maintainer
-MAINTAINER aldor
+FROM nginx:alpine
 
 ################## BEGIN INSTALLATION ######################
-# Update the repository sources list
-RUN apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
-RUN echo "deb http://nginx.org/packages/mainline/debian/ jessie nginx" >> /etc/apt/sources.list
+RUN apk add --update --no-cache ruby ruby-bundler ca-certificates &&\
+    echo 'gem: --no-document' > /etc/gemrc
 
-ENV NGINX_VERSION 1.9.7-1~jessie
-
-RUN apt-get update && \
-    apt-get dist-upgrade -y && \
-    apt-get install -y ca-certificates nginx=${NGINX_VERSION} cron ruby
-
-RUN echo "*/5 * * * * wget https://community.lambdaspace.gr/c/5/l/latest.json -O /usr/share/nginx/html/latest.json" >> mycron
-RUN crontab mycron
-RUN rm mycron
+RUN echo "*/5 * * * * wget https://community.lambdaspace.gr/c/5/l/latest.json -O /usr/share/nginx/html/latest.json" >> mycron && crontab mycron && rm mycron
 
 # Mqtt script
 COPY mqtt.rb /var/local/
@@ -51,5 +39,4 @@ COPY --from=asset_builder /new_website/* ./
 ################## INSTALLATION END ######################
 
 EXPOSE 80 443
-CMD service cron start && service nginx stop && git pull origin master && \
-    service nginx start && gem install mqtt && ruby /var/local/mqtt.rb && /bin/bash
+CMD nginx -g "daemon off;" && gem install mqtt && ruby /var/local/mqtt.rb && /bin/bash

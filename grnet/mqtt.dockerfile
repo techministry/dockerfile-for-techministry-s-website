@@ -3,21 +3,13 @@
 # Based on Debian
 ############################################################
 
-# Set the base image to Debian
-FROM debian:jessie
-
-# File Author / Maintainer
-MAINTAINER aldor
+# Set the base image to Debia
+FROM debian:stretch
 
 ################## BEGIN INSTALLATION ######################
-RUN apt-get update && apt-get install -y wget
-RUN wget http://repo.mosquitto.org/debian/mosquitto-repo.gpg.key
-RUN apt-key add mosquitto-repo.gpg.key
-RUN wget -O /etc/apt/sources.list.d/mosquitto-jessie.list http://repo.mosquitto.org/debian/mosquitto-jessie.list
-
 RUN apt-get update && \
     apt-get dist-upgrade -y && \
-    apt-get install -y ca-certificates mosquitto
+    apt-get install -y apt-transport-https ca-certificates mosquitto
 
 # Mosquito configuration
 COPY credentials/mqtt /var/local/mosquitto
