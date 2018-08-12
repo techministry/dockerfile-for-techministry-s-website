@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: lapi.dockerfile
     restart: unless-stopped
-    enviroment:
+    environment:
       - BROKER_HOST: mqtt.lambdaspace.gr
       - BROKER_PORT: 8883
       - MQTT_TOPIC_HACKERS: "lambdaspace/spacestatus/hackers"
