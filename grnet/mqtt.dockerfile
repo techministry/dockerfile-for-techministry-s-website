@@ -3,7 +3,7 @@
 # Based on Debian
 ############################################################
 
-# Set the base image to Debia
+# Set the base image to Debian
 FROM debian:stretch
 
 ################## BEGIN INSTALLATION ######################

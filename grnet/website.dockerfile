@@ -2,6 +2,7 @@
 # Dockerfile to build and server LambdaSpace's website
 ############################################################
 
+## Builder
 # Use the Node image to build the website's assets
 FROM node:10-stretch as asset_builder
 
@@ -12,24 +13,16 @@ WORKDIR /new_website
 RUN yarn install
 RUN yarn build
 
-
-# Set the base image to Debian
+## Website container
 FROM nginx:alpine
 
-################## BEGIN INSTALLATION ######################
 RUN apk add --update --no-cache ca-certificates
 
-# Forward request and error logs to docker log collector
-RUN ln -sf /dev/stdout /var/log/nginx/access.log
-RUN ln -sf /dev/stderr /var/log/nginx/error.log
-
+# Copy config from host
 COPY website-nginx.conf /etc/nginx/nginx.conf
-
+# Copy assets from builer
 WORKDIR /usr/share/nginx/html
 RUN rm *
-COPY --from=asset_builder /new_website/* ./
-
-################## INSTALLATION END ######################
+COPY --from=asset_builder /new_website/ ./
 
 EXPOSE 80 443
-CMD nginx -g "daemon off;"
