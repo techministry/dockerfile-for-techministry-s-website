@@ -9,10 +9,14 @@ services:
       - mqtt
     expose:
       - "80"
+      - "443"
+    volumes:
+      - /etc/letsencrypt/live/www.lambdaspace.gr:/etc/letsencrypt/live/www.lambdaspace.gr:ro
+      - /etc/letsencrypt/archive/www.lambdaspace.gr:/etc/letsencrypt/archive/www.lambdaspace.gr:ro
     restart: always
 
   proxy:
-    image: abiosoft/caddy
+    image: haproxy:1.7-alpine
     links:
       - website
     external_links:
@@ -21,8 +25,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./Caddyfile:/etc/Caddyfile:ro
-      - ./.caddy:/root/.caddy
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     restart: always
 
   ministerin:
