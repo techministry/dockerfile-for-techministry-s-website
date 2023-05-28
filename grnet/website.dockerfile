@@ -4,7 +4,7 @@
 
 ## Builder
 # Use the Node image to build the website's assets
-FROM node:10-stretch as asset_builder
+FROM node:17-stretch as asset_builder
 
 RUN git clone https://github.com/lambdaspace/new_website.git
 
