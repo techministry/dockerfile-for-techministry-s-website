@@ -3,7 +3,7 @@
 ############################################################
 
 # Use the alpine Node.js base image
-FROM node:8-alpine
+FROM node:21-alpine
 
 ################## BEGIN INSTALLATION ######################
 
